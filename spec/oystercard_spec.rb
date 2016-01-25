@@ -9,5 +9,11 @@ subject(:oystercard) {described_class.new}
     end
   end
 
+  describe "#top_up" do
+    it "Allows balance to be topped up" do
+      expect(oystercard.top_up(10)).to eq oystercard.balance
+    end
+  end
+
 
 end
