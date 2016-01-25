@@ -8,18 +8,21 @@ subject(:oystercard) {described_class.new}
       expect(oystercard.balance).to eq 0
     end
 
-    it "sets 'in_use' to false on initialization" do
-      expect(oystercard.in_use).to eq false
-    end
+    # it "sets 'in_use' to false on initialization" do
+    #   expect(oystercard.in_use).to eq false
+    # end
+
   end
 
   describe "#top_up" do
+
     it "Allows balance to be topped up" do
       expect(oystercard.top_up(10)).to eq oystercard.balance
     end
   end
 
   describe "#top_up maximum" do
+
     it "Prevents balance to be topped up beyond £90" do
       oystercard.instance_variable_set("@balance", 1)
       expect{oystercard.top_up(Oystercard::DEFAULT_MAX)}.to raise_error("Unable to top up balance to above #{Oystercard::DEFAULT_MAX} amount")
@@ -33,22 +36,32 @@ subject(:oystercard) {described_class.new}
   # end
 
   describe "#touch_in" do
+    let(:entry_station) {double(:entry_station)}
 
-    it "Card shows as in_use after touch_in" do
-      oystercard.instance_variable_set("@balance", 1)
-      expect(oystercard.touch_in).to eq true
-    end
+    # it "Card shows as in_use after touch_in" do
+    #   oystercard.instance_variable_set("@balance", 1)
+    #   expect(oystercard.touch_in(entry_station)).to eq true
+    # end
 
     it "Check min balance on touch_in" do
-      expect{oystercard.touch_in}.to raise_error("Balance under #{Oystercard::DEFAULT_MIN}")
+      expect{oystercard.touch_in(entry_station)}.to raise_error("Balance under #{Oystercard::DEFAULT_MIN}")
     end
+
+    it "Records the station of departure at touch_in" do
+      oystercard.instance_variable_set("@balance", 1)
+      oystercard.touch_in(entry_station)
+      expect(oystercard.entry_station).to eq entry_station
+    end
+
   end
 
   describe "#touch_out" do
+    let(:entry_station) {double(:entry_station)}
 
-    it "Card shows as not in_use after touch_out" do
-      expect(oystercard.touch_out).to eq false
-    end
+
+    # it "Card shows as not in_use after touch_out" do
+    #   expect(oystercard.touch_out).to eq false
+    # end
 
     it "Cost for journey is deducted on touch_out" do
       oystercard.instance_variable_set("@balance", 1)
@@ -58,11 +71,14 @@ subject(:oystercard) {described_class.new}
   end
 
   describe "#in_journey" do
-    it "Card shows as not in_use after touch_out" do
+    let(:entry_station) {double(:entry_station)}
+
+    it "Card shows as in_journey after touch_in" do
       oystercard.top_up(1)
-      oystercard.touch_in
+      oystercard.touch_in(entry_station)
       expect(oystercard).to be_in_journey
     end
+
   end
 
 end
