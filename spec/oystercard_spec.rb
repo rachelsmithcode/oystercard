@@ -26,11 +26,11 @@ subject(:oystercard) {described_class.new}
     end
   end
 
-  describe "#deduct" do
-    it "Allows balance to be reduced when money deducted" do
-      expect(oystercard.deduct(10)).to eq oystercard.balance
-    end
-  end
+  # describe "#deduct" do
+  #   it "Allows balance to be reduced when money deducted" do
+  #     expect(oystercard.deduct(10)).to eq oystercard.balance
+  #   end
+  # end
 
   describe "#touch_in" do
 
@@ -52,10 +52,8 @@ subject(:oystercard) {described_class.new}
 
     it "Cost for journey is deducted on touch_out" do
       oystercard.instance_variable_set("@balance", 1)
-      oystercard.touch_out
-      expect(oystercard.balance).to eq 0
+      expect {oystercard.touch_out}.to change{oystercard.balance}.by(-1)
     end
-
 
   end
 
