@@ -5,7 +5,11 @@ subject(:oystercard) {described_class.new}
 
   describe "#initialize" do
     it "Shows a balance of £0 on new card" do
-    expect(oystercard.balance).to eq 0
+      expect(oystercard.balance).to eq 0
+    end
+
+    it "sets 'in_use' to false on initialization" do
+      expect(oystercard.in_use).to eq false
     end
   end
 
@@ -25,6 +29,25 @@ subject(:oystercard) {described_class.new}
   describe "#deduct" do
     it "Allows balance to be reduced when money deducted" do
       expect(oystercard.deduct(10)).to eq oystercard.balance
+    end
+  end
+
+  describe "#touch_in" do
+    it "Card shows as in_use after touch_in" do
+      expect(oystercard.touch_in).to eq true
+    end
+  end
+
+  describe "#touch_out" do
+    it "Card shows as not in_use after touch_out" do
+      expect(oystercard.touch_out).to eq false
+    end
+  end
+
+  describe "#in_journey" do
+    it "Card shows as not in_use after touch_out" do
+      oystercard.touch_in
+      expect(oystercard.in_journey?).to eq true
     end
   end
 
