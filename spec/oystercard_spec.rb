@@ -33,8 +33,14 @@ subject(:oystercard) {described_class.new}
   end
 
   describe "#touch_in" do
+
     it "Card shows as in_use after touch_in" do
+      oystercard.top_up(1)
       expect(oystercard.touch_in).to eq true
+    end
+
+    it "Check min balance on touch_in" do
+      expect{oystercard.touch_in}.to raise_error("Balance under #{Oystercard::DEFAULT_MIN}")
     end
   end
 
@@ -46,8 +52,9 @@ subject(:oystercard) {described_class.new}
 
   describe "#in_journey" do
     it "Card shows as not in_use after touch_out" do
+      oystercard.top_up(1)
       oystercard.touch_in
-      expect(oystercard.in_journey?).to eq true
+      expect(oystercard).to be_in_journey
     end
   end
 
