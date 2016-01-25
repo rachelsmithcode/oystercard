@@ -25,6 +25,7 @@ class Oystercard
   end
 
   def touch_out
+    @balance -= 1
     @in_use = false
   end
 

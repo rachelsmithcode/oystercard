@@ -21,7 +21,7 @@ subject(:oystercard) {described_class.new}
 
   describe "#top_up maximum" do
     it "Prevents balance to be topped up beyond £90" do
-      oystercard.top_up(1)
+      oystercard.instance_variable_set("@balance", 1)
       expect{oystercard.top_up(Oystercard::DEFAULT_MAX)}.to raise_error("Unable to top up balance to above #{Oystercard::DEFAULT_MAX} amount")
     end
   end
@@ -35,7 +35,7 @@ subject(:oystercard) {described_class.new}
   describe "#touch_in" do
 
     it "Card shows as in_use after touch_in" do
-      oystercard.top_up(1)
+      oystercard.instance_variable_set("@balance", 1)
       expect(oystercard.touch_in).to eq true
     end
 
@@ -45,9 +45,18 @@ subject(:oystercard) {described_class.new}
   end
 
   describe "#touch_out" do
+
     it "Card shows as not in_use after touch_out" do
       expect(oystercard.touch_out).to eq false
     end
+
+    it "Cost for journey is deducted on touch_out" do
+      oystercard.instance_variable_set("@balance", 1)
+      oystercard.touch_out
+      expect(oystercard.balance).to eq 0
+    end
+
+
   end
 
   describe "#in_journey" do
