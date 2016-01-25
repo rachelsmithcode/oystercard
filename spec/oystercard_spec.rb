@@ -17,7 +17,8 @@ subject(:oystercard) {described_class.new}
 
   describe "#top_up maximum" do
     it "Prevents balance to be topped up beyond £90" do
-      expect{oystercard.top_up(91)}.to raise_error("Unable to top up balance to above maximum amount")
+      oystercard.top_up(1)
+      expect{oystercard.top_up(Oystercard::DEFAULT_MAX)}.to raise_error("Unable to top up balance to above maximum amount")
     end
 
   end
