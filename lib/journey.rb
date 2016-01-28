@@ -1,51 +1,33 @@
-require './lib/oystercard.rb'
 
 class Journey
-  attr_reader :entry_station, :start_journey, :journey_details, :counter, :exit_station, :journey_cost, :in_journey
+  attr_reader :entry_station, :exit_station, :journey_cost
 
   PEN_FARE = 6
   STANDARD_FARE = 1
 
-  def initialize
+  def initialize(entry_station = "no touch in")
     @journey_cost = 0
-    @in_journey = false
-    @entry_station = nil
-    @exit_station = nil
+    @complete_journey = false
+    @entry_station = entry_station
+    @exit_station = "no touch_out"
   end
 
-  def start_journey(entry_station)
-    if @in_journey
-      @exit_station = "no touch out"
-      journey_complete
-      @in_journey = false
-    else
-      @entry_station = entry_station
-      @in_journey = true
-    end
-  end
-
-  def journey_complete
-    @journey_details = { @entry_station => @exit_station }
-    fare
-  end
-
-  def end_journey(exit_station)
-    if @in_journey == false
-      @in_journey = true
-      @entry_station = "no touch in"
+  def record_exit(exit_station)
+      @complete_journey = true
       @exit_station = exit_station
-      journey_complete
-    else
-      @exit_station = exit_station
-      @in_journey = false
-      journey_complete
-    end
+      self
   end
-
 
   def fare
-    @in_journey ? @journey_cost = PEN_FARE : @journey_cost = STANDARD_FARE
+    @complete_journey ? @journey_cost = PEN_FARE : @journey_cost = STANDARD_FARE
   end
 
+  def complete_journey?
+    @complete_journey
+  end
+
+  def fininsh_journey
+    @complete_journey = true
+  end
 
 end

@@ -26,7 +26,6 @@ subject(:journey) {described_class.new}
 
   describe "#start journey" do
     let(:station) {double(:station)}
-    #let(:journey) {double(:journey)}
 
     it "sets entry_station if it is a new journey after calling start_journey" do
       journey.start_journey(station)
