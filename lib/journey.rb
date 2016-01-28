@@ -1,12 +1,12 @@
+require_relative ('station')
 
 class Journey
   attr_reader :entry_station, :exit_station, :journey_cost
 
   PEN_FARE = 6
-  STANDARD_FARE = 1
+  #STANDARD_FARE = 1
 
   def initialize(entry_station = "no touch in")
-    #@journey_cost = 0
     @entry_station = entry_station
     @exit_station = "no touch out"
   end
@@ -16,7 +16,8 @@ class Journey
   end
 
   def fare
-    @complete_journey ? @journey_cost = PEN_FARE : @journey_cost = STANDARD_FARE
+    zones_travelled + 1
+    #@journey_cost = STANDARD_FARE
   end
 
   def incomplete?
@@ -27,5 +28,9 @@ class Journey
   # def fininsh_journey
   #   @complete_journey = true
   # end
+
+  def zones_travelled
+    (entry_station.zone - exit_station.zone).abs
+  end
 
 end

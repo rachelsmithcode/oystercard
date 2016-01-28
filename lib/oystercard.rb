@@ -50,7 +50,7 @@ class Oystercard
   end
 
   def reimburse
-    amount = PEN_FARE - STANDARD_FARE
+    amount = PEN_FARE - @journey_log.outstanding_charges
     @balance += amount
   end
 

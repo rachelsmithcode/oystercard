@@ -33,10 +33,9 @@ class JourneyLog
   #   @current_journey = new_journey
   # end
 
-  # def outstanding_charges
-  #   @current_journey.fare
-  #   @current_journey.fininsh_journey
-  # end
+  def outstanding_charges
+     @current_journey.fare
+  end
 
   def record_log(journey)
     @journey_hist << journey
