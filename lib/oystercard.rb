@@ -7,10 +7,11 @@ class Oystercard
 
   MAX_LIMIT = 90
   DEFAULT_MIN = 1
+  PEN_FARE = 6
+  STANDARD_FARE = 1
 
   def initialize(journey_log = JourneyLog.new)
     @balance = 0
-    # @journey_klass = journey_klass
     @journey_log = journey_log
   end
 
@@ -25,18 +26,32 @@ class Oystercard
 
   def touch_in(station)
     raise "Balance under #{DEFAULT_MIN}" if @balance < DEFAULT_MIN
+    deduct(PEN_FARE)
     @journey_log.start_journey(station)
   end
 
   def touch_out(station)
-    current_journey = @journey_log.end_journey(station)
-    deduct(current_journey.journey_cost)
+    if @journey_log.current_journey
+      @journey_log.end_journey(station)
+      reimburse unless @journey_log.incomplete_journey?
+      @journey_log.reset
+    else
+      @journey_log.start_journey("no touch in")
+      @journey_log.end_journey(station)
+      @journey_log.reset
+      deduct(PEN_FARE)
+    end
   end
 
   private
 
   def deduct(amount)
     @balance -= amount
+  end
+
+  def reimburse
+    amount = PEN_FARE - STANDARD_FARE
+    @balance += amount
   end
 
 end

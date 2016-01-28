@@ -6,28 +6,26 @@ class Journey
   STANDARD_FARE = 1
 
   def initialize(entry_station = "no touch in")
-    @journey_cost = 0
-    @complete_journey = false
+    #@journey_cost = 0
     @entry_station = entry_station
-    @exit_station = "no touch_out"
+    @exit_station = "no touch out"
   end
 
   def record_exit(exit_station)
-      @complete_journey = true
       @exit_station = exit_station
-      self
   end
 
   def fare
     @complete_journey ? @journey_cost = PEN_FARE : @journey_cost = STANDARD_FARE
   end
 
-  def complete_journey?
-    @complete_journey
+  def incomplete?
+    #@complete_journey = true if
+    @exit_station == "no touch out" || @entry_station == "no touch in"
   end
-
-  def fininsh_journey
-    @complete_journey = true
-  end
+  #
+  # def fininsh_journey
+  #   @complete_journey = true
+  # end
 
 end
