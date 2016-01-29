@@ -8,7 +8,7 @@ class Oystercard
   MAX_LIMIT = 90
   DEFAULT_MIN = 1
   PEN_FARE = 6
-  STANDARD_FARE = 1
+  #STANDARD_FARE = 1
 
   def initialize(journey_log = JourneyLog.new)
     @balance = 0
